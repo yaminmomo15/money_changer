@@ -3,117 +3,67 @@ import requests
 import json
 import inflect
 from dotenv import dotenv_values
-# This is a multi-currency exchange calculator
-
-# TO-DO: ask for user inputs
-# Which currency do you want to exchange?
-# Do you have a specific amount you need in the currency you want to receive? (y/n)
-    # y => The amount: ___(in currency you want to receive)
-        # Do you have specific bills requirements? (small or large bills) (y/n)
-        # n => Default bill: Largest notes comes first.
-        # y => What are the bills you need? <add until given amount or shows error if exceeds>
-    # n => You want to exchange the currency you have.
-        # What currency do you have?
-            # Enter currency
-            # How much do you have in <that currency>?
-            # <Calculate the exchange rate>
-
-supported_currencies = {}
-target_c = ""
 
 def main():
-    global target_c
-    # Ask for currency user want
-    target_c = check_currency("Which currency do you want to receive? ")
+    base_currency_code = input("Please enter the base currency code (e.g., USD, EUR, JPY): ").strip().upper()
+    exchange_rates = access_exchange_rates(base_currency_code)
+    spread_percentage = float(input("Please enter the spread percentage applied by the money changer (e.g., 2 for 2%): ").strip())
+    transaction_type = input("Would you like to buy or sell foreign currency? (buy/sell): ").strip().lower()
 
-    # Ask user to choose options
-    option = input(f"Would you like to specify the amount you want to receive in {target_c}? (y/n): ").strip().lower()
+    # TO-DO: loop for selling foreign currency
+    total, currencies = calculate_total(base_currency_code, transaction_type, spread_percentage, **exchange_rates)    
 
-    if option == "y":
-        # Specify the amount user want to recieve
-        target_amount = float(input("Specify the amount you want to receive: "))
-        # Specify the currency user has
-        source_c = check_currency("Which currency are you exchanging from? ")
-        # TODO: optimize code
-        total = supported_currencies[source_c] * target_amount
-        print(f"Pay {total} {source_c} to receive {target_amount:.2f} {target_c}")
-        sys.exit(0)
-    
-    if option == "n":
-        # Specify the amount user want to exchange from
-        print("You want to exchange from the currency you have./n")
-        total = 0.00
-        source_money = []
-        p = inflect.engine()
-        while True:
-            try:
-                source_c = check_currency("Which currency are you exchanging from? ")
-                source_amount = check_amount(f"How much do you want to exchange from {source_c}? ")
-                source_money.append(format(source_amount, ".2f")+ " " + source_c)
-                total += float(source_amount) / float(supported_currencies[source_c])
-                print(f"You receive total {total:.2f} {target_c} from {p.join(source_money)}")
-            except EOFError:
-                print("")
-                sys.exit(0)
+    # TO-DO: transaction_date: get today's date
+    personal_details = input("Please provide your full name: ").strip()
+    transaction_method = input("How would you like to complete the transaction? (eg. bank transfer, cash, digital wallet): ").strip().capitalize()
+
+    # TO-DO: print out receipt
     
 
+def access_exchange_rates(code):
+    api_key = dotenv_values(".env")["API_key"]
+    requested_data = requests.get(f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{code}")
+    object_data = requested_data.json()
+    return object_data["conversion_rates"]
 
-def exchange_rate(from_c):
-    '''
-    Calculate exchange rate from source to target currency
-    
-    :param from_c: Source Currency
-    :type from_c: str
-    :return: float
-    '''
-    global supported_currencies
-    source_currency = check_currency("Which currency are you exchanging from? ")
-    return supported_currencies[from_c], source_currency
-   
-
-def check_amount(m):
-    '''
-    Ask user for the amount they want
-
-    :param m: Message 
-    :type m: str
-    :return: amount
-    :return type: float
-    '''
+def calculate_total(base, buy_or_sell, spread, **rates):
+    # TO-DO: get exchange rate
+    print('here!')    
+    total = 0.0000
+    foreign_currencies = []
+    p = inflect.engine()
     while True:
         try:
-            return float(input(m).strip())
-        except ValueError:
-            print("Enter decimal numbers only!")
-            pass
+            foreign_currency_code = input("Please enter the foreign currency code you want to exchange (e.g., USD, EUR, JPY): ").strip().upper()
+            if not foreign_currency_code in rates:
+                print("Invalid foreign currency code, please try again!")
+                pass
+            amount_to_exchange = float(input("How much of the foreign currency do you want to exchange? ").strip())
+            foreign_currencies.append(format(amount_to_exchange,".2f") + " " + foreign_currency_code)
+            market_rate = float(rates[foreign_currency_code])
+            spread_rate = market_rate * spread / 2.0000 / 100.0000
+            if buy_or_sell == "sell":               
+                # total += amount_to_exchange / (market_rate + spread_rate)
+                total += calculate_price(amount_to_exchange, market_rate, spread_rate, is_selling=True)
+                print(f"You have sold {p.join(foreign_currencies)} to receive {total:.2f} {base}.")
+                continue
+            else:
+                # total = amount_to_exchange / (market_rate - spread_rate)
+                total = calculate_price(amount_to_exchange, market_rate, spread_rate, is_selling=False)
+                print(f"You have paid {total:.2f} {base} to receive {p.join(foreign_currencies)}.")
+                break
+        except EOFError:
+            print("")
+            break        
+    return total, foreign_currencies
 
-def check_currency(m):
-    '''
-    Ask user about currency they want to exchange
-
-    :param m: Message for input
-    :param c: Name of currency user wants
-    :type c: str
-    :return: if the currency is supported, otherwise prompt the question
-    '''  
-    api_key = dotenv_values(".env")["API_key"]
-    while True:
-        # Get user input for currency
-        c = input(m).strip().upper()
-        global supported_currencies
-        # Target currency always comes first. If empty, request API call
-        if not supported_currencies:
-            r = requests.get(f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{c}")
-            o = r.json()
-            supported_currencies = o["conversion_rates"]
-            print('api called here!')
-        if c in supported_currencies:
-            return c
-        else:
-            print("Invalid currency, please try again!")
-        
-
-
+def calculate_price(amount, market_rate, spread_rate, is_selling):
+    if is_selling:
+        return amount / (market_rate + spread_rate)
+    else:
+        return amount / (market_rate - spread_rate)
 
 if __name__ == "__main__":
     main()
+
+# https://www.reddit.com/r/learnpython/comments/1azumnf/how_to_mock_a_dictionary_during_unit_testing_with/
