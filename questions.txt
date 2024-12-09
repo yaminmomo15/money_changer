@@ -1,0 +1,60 @@
+Would you like to buy or sell currency? (buy/sell)
+> buy
+
+Please enter the foreign currency code you want to exchange (e.g., USD, EUR, JPY):
+> EUR
+
+Please enter the base currency code (e.g., USD, EUR, JPY):
+> USD
+
+How much of the foreign currency do you want to exchange?
+> 1000
+
+Please enter the current market rate for the foreign currency in terms of the base currency (e.g., 1.20 for USD/EUR):
+> 1.20
+
+Please enter the spread percentage applied by the money changer (e.g., 2 for 2%):
+> 2
+
+When do you plan to complete this transaction? (e.g., YYYY-MM-DD)
+> 2024-07-05
+
+Please provide your full name and contact information:
+> John Doe, john.doe@example.com
+
+How would you like to complete the transaction? (e.g., bank transfer, cash, digital wallet)
+> bank transfer
+
+# https://www.reddit.com/r/learnpython/comments/1azumnf/how_to_mock_a_dictionary_during_unit_testing_with/
+"""
+To-Do:
+- (DONE_generate transactions.csv => add ID and all transactions
+    -(DONE) receipt.pdf will take values of latest ID from transactions.csv file
+- (DELETED)format receipt.pdf, => count line-widths => generate position for summary
+- add unit tests
+"""
+
+"""
+CSV files
+- transactions: id, user, cashier, date, time, from & to currencies, exchange rate, amounts, key + value pairs
+- company: cashiers, company name, address, phone number key + value pairs
+
+"""
+"""
+get last row of transactions.csv
+get id, and +1
+use it in current transaction
+"""
+
+# optimize main
+# functions does one thing at a time
+# make it organized
+# prepare slide
+    #your project’s title;
+    # your name;
+    # your GitHub and edX usernames;
+    # your city and country;
+    # and, the date you have recorded this video.
+# Take screen record
+# Edit Video
+

@@ -1,2 +1,3 @@
 # money_changer
-Calculate money exchange depending on latest exchange rate.
+Calculate multi-currency exchange depending on exchange rate and spread rate.
+Generate receipt and save transaction record.
