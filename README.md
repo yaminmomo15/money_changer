@@ -1,12 +1,8 @@
-# money_changer
-Calculate multi-currency exchange depending on exchange rate and spread rate.
-Generate receipt and save transaction record.
-
-
 # MoneyChanger50
 #### Video Demo: 
 
 #### Description:
+
 ### What is it?
 MoneyChanger50 is a command line app that calculate multi-currency exchange depending on exchange rate and spread rate.
 It generates receipt in PDF format and save transaction records in csv format.
