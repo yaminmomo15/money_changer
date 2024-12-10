@@ -1,7 +1,7 @@
 # MoneyChanger50
 
 ## Video Demo:  
-*[Add your demo video link here]*
+[MoneyChanger50](https://youtu.be/Z9FXNhSEpVA?si=q4BlDwGT3Qym2vat)
 
 ## Description
 
@@ -57,5 +57,7 @@ python project.py
 - `dotenv`: API key management
 
 ## Background and Inspiration
-Inspired by real-world experiences in Thailand, MoneyChanger50 addresses the challenges of manual currency exchange calculations. It streamlines operations through automation while maintaining professional standards with proper documentation.
+The idea for MoneyChanger50 came from a real-world scenario while traveling in Thailand. Managing multiple-currency exchanges manually was a tedious task for the cashier, who had to calculate each transaction individually. This app eliminates the manual hassle by automating the calculation process, ensuring accuracy and saving time for both the cashier and the customer.
+
+By integrating live exchange rates and providing flexibility with customizable spread percentages, MoneyChanger50 streamlines the workflow of money-changing businesses. It also ensures professionalism through PDF receipts and proper record-keeping, catering to the needs of both small-scale and large-scale operations.
 
