@@ -1,39 +1,61 @@
 # MoneyChanger50
-#### Video Demo: 
 
-#### Description:
+## Video Demo:  
+*[Add your demo video link here]*
+
+## Description
 
 ### What is it?
-MoneyChanger50 is a command line app that calculate multi-currency exchange depending on exchange rate and spread rate.
-It generates receipt in PDF format and save transaction records in csv format.
+MoneyChanger50 is a Python-based command-line application designed to simplify multi-currency exchange processes. It calculates exchange rates dynamically based on the latest market data and incorporates a spread rate defined by the money changer. The app generates professional receipts in PDF format and logs all transaction records in a structured CSV file, making it a reliable tool for money changers or financial institutions.
 
-### How it works?
-User needs to type in the information about 
-- the base currency
-- foreign currency
-- spread rate
-- cashier name
-- customer name
-- the amount they are going to exchange
-Real-time exchange rate will get through free public API from https://v6.exchangerate-api.com.
-Calculate the exchange rate considering the spread rate and reply it back to the user.
-When user has completed entering the information, the app generates receipt.pdf and add the transaction data including the information user typed in into transactions.csv file.
+### Key Features
+1. **Real-Time Exchange Rates**: Fetches live exchange rate data from the [ExchangeRate-API](https://v6.exchangerate-api.com)
+2. **Dynamic Spread Rates**: Allows customizable profit margins through spread percentage
+3. **Multi-Currency Transactions**: Supports exchanging multiple foreign currencies in a single session
+4. **Automated Receipts**: Generates detailed PDF receipts with transaction details
+5. **Transaction Records**: Saves transactions in CSV format for reporting
 
+### How It Works
+1. User inputs:
+   - Base currency (e.g., CAD, USD)
+   - Foreign currency codes
+   - Spread percentage
+   - Exchange amount
+   - Cashier and customer details
+2. App calculates exchange based on live rates and spread
+3. Generates PDF receipt and logs transaction
+4. Supports multiple transactions per session
 
-### Libraries:
-- request
-- inflect
-- csv
-- datetime
-- fpdf2
-- dotenv
+## Installation and Usage
 
-### How to run:
+### Prerequisites
+- Python installed on your system
+
+### Installation
+Install the required Python libraries:
+```bash
+pip install requests inflect fpdf2 python-dotenv
 ```
-pip install request inflect csv datetime fpdf2 dotenv
+
+### Running the Application
+```bash
 python project.py
 ```
 
-### Background Idea 
-I came up with this idea when I went to a money changer to sell multiple currencies during my travel in Thailand . It took significantly longer time to complete the transaction compared to other customers who made single currency exchange. The cashier has to manually look at the exchange rate, calculate the price and add into total for each currency. So, got an idea of developing an app that get the real-time market rate of the currency and  calculate the exchange rate altogether. It allows cashier to add the spread rate of their company as well.
+### Generated Files
+- `receipt.pdf`: Transaction receipt
+- `transactions.csv`: Transaction log
+
+## Technical Details
+
+### Libraries Used
+- `requests`: API data fetching
+- `inflect`: Number-to-word conversion
+- `csv`: Data logging
+- `datetime`: Transaction timing
+- `fpdf2`: PDF generation
+- `dotenv`: API key management
+
+## Background and Inspiration
+Inspired by real-world experiences in Thailand, MoneyChanger50 addresses the challenges of manual currency exchange calculations. It streamlines operations through automation while maintaining professional standards with proper documentation.
 
